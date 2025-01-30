@@ -1,7 +1,7 @@
 services:
   circle-game:
-    container_name: circle-game
-    image: sharfy9/circle-game:latest
+    container_name: perfect-circle-game
+    image: sharfy9/perfect-circle-game:latest
     build:
       context: .
       dockerfile: Dockerfile
