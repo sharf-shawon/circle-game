@@ -3,6 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="description" content="Challenge yourself to draw the perfect circle in this addictive precision game. Test your steady hand and accuracy!">
+    <meta name="keywords" content="perfect circle game, circle drawing game, accuracy game, circle game, hand-eye coordination games">
+    <meta name="author" content="Sharfuddin Shawon">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://circle.shawon.game/">
+    <meta property="og:title" content="Perfect Circle Game | Test Your Precision">
+    <meta property="og:description" content="Challenge yourself to draw the perfect circle in this addictive precision game. Test your steady hand and accuracy!">
+    <meta property="og:image" content="https://circle.shawon.me/preview.jpg">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://circle.shawon.me/">
+    <meta property="twitter:title" content="Perfect Circle Game | Test Your Precision">
+    <meta property="twitter:description" content="Challenge yourself to draw the perfect circle in this addictive precision game. Test your steady hand and accuracy!">
+    <meta property="twitter:image" content="https://circle.shawon.me/preview.jpg">
+    
     <title>Perfect Circle Game | Sharfuddin Shawon</title>
     <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Fredoka+One&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
@@ -36,7 +54,7 @@
 </head>
 <body class="dark:bg-gray-900 bg-gray-100 min-h-screen transition-colors duration-200 overflow-hidden">
     <!-- Navbar -->
-    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+    <nav class="bg-white dark:bg-gray-800 shadow-lg relative z-50">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
@@ -65,7 +83,7 @@
     </nav>
 
     <!-- Main Content -->
-    <canvas id="gameCanvas" class="fixed inset-0 w-full h-full touch-none cursor-crosshair z-10"></canvas>
+    <canvas id="gameCanvas" class="fixed inset-0 w-full h-full touch-none cursor-crosshair"></canvas>
 
     <div class="fixed inset-x-0 top-20 z-20 pointer-events-none">
         <div class="text-center">
