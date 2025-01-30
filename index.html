@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfect Circle Game</title>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Fredoka+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: {
+                            light: '#4CAF50',
+                            dark: '#45a049'
+                        }
+                    },
+                    fontFamily: {
+                        game: ['Righteous', 'cursive'],
+                        display: ['Fredoka One', 'cursive']
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .gradient-text {
+            background: linear-gradient(45deg, #4CAF50, #45a049);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+    </style>
+</head>
+<body class="dark:bg-gray-900 bg-gray-100 min-h-screen transition-colors duration-200">
+    <!-- Navbar -->
+    <nav class="bg-white dark:bg-gray-800 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16">
+                <div class="flex items-center">
+                    <!-- Logo -->
+                    <span class="text-2xl font-game text-gray-800 dark:text-white">Perfect Circle</span>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <!-- Dark mode toggle -->
+                    <button id="themeToggle" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <svg id="sunIcon" class="w-6 h-6 hidden text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
+                        </svg>
+                        <svg id="moonIcon" class="w-6 h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
+                        </svg>
+                    </button>
+                    <!-- Info button -->
+                    <button id="infoBtn" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <svg class="w-6 h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-8">
+        <div id="instructions" class="text-center mb-6">
+            <span class="font-display text-2xl gradient-text">Draw a perfect circle around the red dot!</span>
+        </div>
+        <div id="gameContainer" class="flex justify-center">
+            <canvas id="gameCanvas" width="400" height="400" class="border-2 border-gray-300 dark:border-gray-600 bg-gray-200 dark:bg-gray-800 cursor-crosshair rounded-lg"></canvas>
+        </div>
+
+        <!-- Controls -->
+        <div class="flex flex-col sm:flex-row justify-center items-center space-y-4 sm:space-y-0 sm:space-x-6 mt-6">
+            <button id="resetBtn" class="px-6 py-2 bg-primary-light dark:bg-primary-dark text-white rounded-lg hover:opacity-90 transition-opacity font-game">
+                Reset
+            </button>
+            <div id="difficultyContainer" class="flex items-center space-x-4 text-gray-600 dark:text-gray-300 font-game">
+                <span>Difficulty:</span>
+                <input type="range" id="difficultySlider" min="1" max="10" value="2" class="w-48">
+                <span id="difficultyValue" class="w-8 text-center">2</span>
+            </div>
+        </div>
+
+        <!-- Stats Bar -->
+        <div id="statsBar" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 shadow-lg py-4">
+            <div class="container mx-auto px-4 flex justify-center items-center space-x-8 sm:space-x-16">
+                <div class="stat-item text-center">
+                    <div class="text-sm font-game text-gray-500 dark:text-gray-400 uppercase tracking-wide">Accuracy</div>
+                    <div id="accuracyValue" class="text-2xl font-game gradient-text">0%</div>
+                </div>
+                <div class="stat-item text-center">
+                    <div class="text-sm font-game text-gray-500 dark:text-gray-400 uppercase tracking-wide">Tries</div>
+                    <div id="triesValue" class="text-2xl font-game gradient-text">0</div>
+                </div>
+                <div class="stat-item text-center">
+                    <div class="text-sm font-game text-gray-500 dark:text-gray-400 uppercase tracking-wide">Average</div>
+                    <div id="averageValue" class="text-2xl font-game gradient-text">0%</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Info Modal -->
+    <div id="infoModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
+        <div class="bg-white dark:bg-gray-800 p-8 rounded-lg max-w-2xl w-full mx-4 relative">
+            <button id="closeModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                </svg>
+            </button>
+            <h2 class="text-2xl font-game mb-4 gradient-text">How to Play Perfect Circle</h2>
+            <div class="space-y-4 text-gray-600 dark:text-gray-300 font-game">
+                <p>Welcome to Perfect Circle, a game that challenges your precision and steady hand! Here's how to play:</p>
+                <ol class="list-decimal list-inside space-y-2">
+                    <li>Click and hold your mouse button to start drawing</li>
+                    <li>Try to draw a perfect circle around the red dot</li>
+                    <li>Release the mouse button to complete your circle</li>
+                    <li>Your accuracy is calculated based on how close your drawing matches a perfect circle</li>
+                    <li>Adjust the difficulty slider to make the challenge easier or harder</li>
+                </ol>
+                <p class="mt-4">
+                    Perfect Circle is not just a game - it's a test of hand-eye coordination, spatial awareness, and fine motor skills. 
+                    Regular practice can help improve these abilities while providing an engaging and fun experience.
+                </p>
+                <p>
+                    Challenge yourself to achieve higher accuracy scores and compete with friends to see who can draw the most perfect circle!
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const canvas = document.getElementById('gameCanvas');
+        const ctx = canvas.getContext('2d');
+        const accuracyValue = document.getElementById('accuracyValue');
+        const triesValue = document.getElementById('triesValue');
+        const averageValue = document.getElementById('averageValue');
+        const resetBtn = document.getElementById('resetBtn');
+        const difficultySlider = document.getElementById('difficultySlider');
+        const difficultyValue = document.getElementById('difficultyValue');
+        const themeToggle = document.getElementById('themeToggle');
+        const sunIcon = document.getElementById('sunIcon');
+        const moonIcon = document.getElementById('moonIcon');
+        const infoBtn = document.getElementById('infoBtn');
+        const infoModal = document.getElementById('infoModal');
+        const closeModal = document.getElementById('closeModal');
+        
+        let isDrawing = false;
+        let points = [];
+        let targetRadius = 0;
+        let tries = 0;
+        let totalAccuracy = 0;
+        let isAnimating = false;
+
+        function animateCircle() {
+            if (isAnimating) return;
+            isAnimating = true;
+            points = [];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawCenterDot();
+
+            const radius = 100; // Fixed demo radius
+            const steps = 100;
+            let currentStep = 0;
+            targetRadius = radius;
+
+            function drawStep() {
+                if (currentStep >= steps) {
+                    isAnimating = false;
+                    const finalAccuracy = calculateAccuracy();
+                    updateStats(finalAccuracy);
+                    return;
+                }
+
+                const angle = (currentStep / steps) * Math.PI * 2;
+                // Add slight variations to make it look organic
+                const variation = Math.sin(angle * 3) * 2;
+                const x = centerX + (radius + variation) * Math.cos(angle);
+                const y = centerY + (radius + variation) * Math.sin(angle);
+
+                points.push({x, y});
+
+                ctx.beginPath();
+                ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--tw-text-opacity') > 0.5 ? '#4CAF50' : '#45a049';
+                ctx.lineWidth = 4;
+                ctx.lineCap = 'round';
+                ctx.lineJoin = 'round';
+                ctx.shadowBlur = 10;
+                ctx.shadowColor = ctx.strokeStyle;
+
+                if (currentStep === 0) {
+                    ctx.moveTo(x, y);
+                } else {
+                    ctx.moveTo(points[currentStep - 1].x, points[currentStep - 1].y);
+                }
+                ctx.lineTo(x, y);
+                ctx.stroke();
+
+                const accuracy = calculateAccuracy();
+                updateStats(accuracy);
+
+                currentStep++;
+                requestAnimationFrame(drawStep);
+            }
+
+            drawStep();
+        }
+
+        // Theme toggle functionality
+        function updateTheme() {
+            if (document.documentElement.classList.contains('dark')) {
+                sunIcon.classList.remove('hidden');
+                moonIcon.classList.add('hidden');
+            } else {
+                sunIcon.classList.add('hidden');
+                moonIcon.classList.remove('hidden');
+            }
+        }
+
+        themeToggle.addEventListener('click', () => {
+            document.documentElement.classList.toggle('dark');
+            updateTheme();
+        });
+
+        // Modal functionality
+        infoBtn.addEventListener('click', () => {
+            infoModal.classList.remove('hidden');
+            infoModal.classList.add('flex');
+        });
+
+        closeModal.addEventListener('click', () => {
+            infoModal.classList.add('hidden');
+            infoModal.classList.remove('flex');
+        });
+
+        infoModal.addEventListener('click', (e) => {
+            if (e.target === infoModal) {
+                infoModal.classList.add('hidden');
+                infoModal.classList.remove('flex');
+            }
+        });
+
+        // Game functionality
+        const centerX = canvas.width / 2;
+        const centerY = canvas.height / 2;
+
+        function drawCenterDot() {
+            ctx.beginPath();
+            ctx.fillStyle = '#ff0000';
+            ctx.arc(centerX, centerY, 3, 0, Math.PI * 2);
+            ctx.fill();
+        }
+
+        function calculateAccuracy() {
+            if (points.length < 2) return 0;
+
+            let totalDeviation = 0;
+
+            points.forEach(point => {
+                const dx = point.x - centerX;
+                const dy = point.y - centerY;
+                const radius = Math.sqrt(dx * dx + dy * dy);
+                const deviation = Math.abs(radius - targetRadius);
+                totalDeviation += deviation;
+            });
+
+            const averageDeviation = totalDeviation / points.length;
+            const difficultyFactor = parseInt(difficultySlider.value);
+            const maxDeviation = targetRadius / (difficultyFactor * 2);
+            let accuracy = 100 - (averageDeviation / maxDeviation * 100);
+            
+            accuracy = Math.max(0, Math.min(100, accuracy));
+            return accuracy;
+        }
+
+        function startDrawing(e) {
+            isDrawing = true;
+            points = [];
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            drawCenterDot();
+            
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            targetRadius = Math.sqrt((x - centerX) ** 2 + (y - centerY) ** 2);
+            points.push({x, y});
+            
+            ctx.beginPath();
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--tw-text-opacity') > 0.5 ? '#4CAF50' : '#45a049';
+            ctx.lineWidth = 4;
+            ctx.lineCap = 'round';
+            ctx.lineJoin = 'round';
+            ctx.shadowBlur = 10;
+            ctx.shadowColor = ctx.strokeStyle;
+            ctx.moveTo(x, y);
+        }
+
+        function draw(e) {
+            if (!isDrawing) return;
+
+            const rect = canvas.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            points.push({x, y});
+            
+            ctx.lineTo(x, y);
+            ctx.stroke();
+            
+            const accuracy = calculateAccuracy();
+            updateStats(accuracy);
+        }
+
+        function stopDrawing() {
+            if (!isDrawing) return;
+            
+            isDrawing = false;
+            if (points.length > 0) {
+                ctx.closePath();
+                const finalAccuracy = calculateAccuracy();
+                tries++;
+                totalAccuracy += finalAccuracy;
+                updateStats(finalAccuracy);
+            }
+        }
+
+        function updateStats(accuracy, reset = false) {
+            const averageAccuracy = tries > 0 ? totalAccuracy / tries : 0;
+            accuracyValue.textContent = reset ? '0.0%' : `${accuracy.toFixed(1)}%`;
+            triesValue.textContent = reset ? 0 : tries;
+            averageValue.textContent = reset ? '0.0%' : `${averageAccuracy.toFixed(1)}%`;
+        }
+
+        function reset() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            points = [];
+            tries = 0;
+            totalAccuracy = 0;
+            drawCenterDot();
+            updateStats(0, true);
+            setTimeout(animateCircle, 500); // Add animation after a short delay
+        }
+
+        difficultySlider.addEventListener('input', function() {
+            difficultyValue.textContent = this.value;
+        });
+
+        canvas.addEventListener('mousedown', startDrawing);
+        canvas.addEventListener('mousemove', draw);
+        canvas.addEventListener('mouseup', stopDrawing);
+        canvas.addEventListener('mouseout', stopDrawing);
+        resetBtn.addEventListener('click', reset);
+
+        // Initial setup
+        updateTheme();
+        drawCenterDot();
+        setTimeout(animateCircle, 1000); // Start animation after 1 second
+    </script>
+</body>
+</html>
