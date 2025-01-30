@@ -2,7 +2,7 @@
 <html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0">
     <meta name="description" content="Challenge yourself to draw the perfect circle in this addictive precision game. Test your steady hand and accuracy!">
     <meta name="keywords" content="perfect circle game, circle drawing game, accuracy game, circle game, hand-eye coordination games">
     <meta name="author" content="Sharfuddin Shawon">
@@ -26,8 +26,6 @@
     <link rel="icon" type="image/png" sizes="32x32" href="./assets/favicon-32x32.png">
     <link rel="icon" type="image/png" sizes="16x16" href="./assets/favicon-16x16.png">
     <link rel="manifest" href="./assets/site.webmanifest">
-    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Fredoka+One&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
             darkMode: 'class',
@@ -35,8 +33,12 @@
                 extend: {
                     colors: {
                         primary: {
-                            light: '#4CAF50',
-                            dark: '#45a049'
+                            light: '#2E7D32', // Darker green for better contrast
+                            dark: '#388E3C'  // Adjusted for better contrast
+                        },
+                        text: {
+                            light: '#1F2937', // Darker text for better contrast
+                            dark: '#F3F4F6'   // Lighter text for dark mode
                         }
                     },
                     fontFamily: {
@@ -49,7 +51,7 @@
     </script>
     <style>
         .gradient-text {
-            background: linear-gradient(45deg, #4CAF50, #45a049);
+            background: linear-gradient(45deg, #2E7D32, #388E3C);
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
@@ -63,21 +65,21 @@
             <div class="flex justify-between h-16">
                 <div class="flex items-center">
                     <!-- Logo -->
-                    <span class="text-2xl font-game text-gray-800 dark:text-white">Perfect Circle</span>
+                    <span class="text-2xl font-game text-text-light dark:text-text-dark">Perfect Circle</span>
                 </div>
                 <div class="flex items-center space-x-4">
                     <!-- Dark mode toggle -->
-                    <button id="themeToggle" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
-                        <svg id="sunIcon" class="w-6 h-6 hidden text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="themeToggle" aria-label="Toggle dark mode" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <svg id="sunIcon" class="w-6 h-6 hidden text-text-light dark:text-text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
                         </svg>
-                        <svg id="moonIcon" class="w-6 h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <svg id="moonIcon" class="w-6 h-6 text-text-light dark:text-text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" />
                         </svg>
                     </button>
                     <!-- Info button -->
-                    <button id="infoBtn" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
-                        <svg class="w-6 h-6 text-gray-800 dark:text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <button id="infoBtn" aria-label="Show game instructions" class="p-2 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <svg class="w-6 h-6 text-text-light dark:text-text-dark" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                     </button>
@@ -97,16 +99,16 @@
 
     <!-- Controls -->
     <div class="fixed top-40 right-4 z-20">
-        <button id="resetBtn" class="px-4 py-2 bg-primary-light dark:bg-primary-dark text-white rounded-lg hover:opacity-90 transition-opacity font-game shadow-lg">
+        <button id="resetBtn" aria-label="Reset game" class="px-4 py-2 bg-primary-light dark:bg-primary-dark text-white rounded-lg hover:opacity-90 transition-opacity font-game shadow-lg">
             Reset
         </button>
     </div>
 
     <div class="fixed bottom-20 left-4 right-4 z-20">
-        <div class="flex items-center space-x-4 bg-white dark:bg-gray-800 bg-opacity-80 dark:bg-opacity-80 p-3 rounded-lg shadow-lg text-gray-600 dark:text-gray-300 font-game">
-            <span class="whitespace-nowrap">Difficulty:</span>
-            <input type="range" id="difficultySlider" min="1" max="10" value="2" class="flex-grow">
-            <span id="difficultyValue" class="w-8 text-center">2</span>
+        <div class="flex items-center space-x-4 bg-white dark:bg-gray-800 bg-opacity-80 dark:bg-opacity-80 p-3 rounded-lg shadow-lg text-text-light dark:text-text-dark font-game">
+            <label for="difficultySlider" class="whitespace-nowrap">Difficulty:</label>
+            <input type="range" id="difficultySlider" aria-label="Game difficulty" min="1" max="10" value="2" class="flex-grow">
+            <span id="difficultyValue" aria-label="Current difficulty value" class="w-8 text-center">2</span>
         </div>
     </div>
 
@@ -114,16 +116,16 @@
     <div id="statsBar" class="fixed bottom-0 left-0 right-0 bg-white dark:bg-gray-800 bg-opacity-90 dark:bg-opacity-90 shadow-lg py-3 z-20">
             <div class="container mx-auto px-4 flex justify-center items-center space-x-8 sm:space-x-16">
                 <div class="stat-item text-center">
-                    <div class="text-sm font-game text-gray-500 dark:text-gray-400 uppercase tracking-wide">Accuracy</div>
-                    <div id="accuracyValue" class="text-2xl font-game gradient-text">0%</div>
+                    <div class="text-sm font-game text-text-light dark:text-text-dark uppercase tracking-wide">Accuracy</div>
+                    <div id="accuracyValue" aria-label="Current accuracy" class="text-2xl font-game gradient-text">0%</div>
                 </div>
                 <div class="stat-item text-center">
-                    <div class="text-sm font-game text-gray-500 dark:text-gray-400 uppercase tracking-wide">Tries</div>
-                    <div id="triesValue" class="text-2xl font-game gradient-text">0</div>
+                    <div class="text-sm font-game text-text-light dark:text-text-dark uppercase tracking-wide">Tries</div>
+                    <div id="triesValue" aria-label="Number of tries" class="text-2xl font-game gradient-text">0</div>
                 </div>
                 <div class="stat-item text-center">
-                    <div class="text-sm font-game text-gray-500 dark:text-gray-400 uppercase tracking-wide">Average</div>
-                    <div id="averageValue" class="text-2xl font-game gradient-text">0%</div>
+                    <div class="text-sm font-game text-text-light dark:text-text-dark uppercase tracking-wide">Average</div>
+                    <div id="averageValue" aria-label="Average accuracy" class="text-2xl font-game gradient-text">0%</div>
                 </div>
             </div>
         </div>
@@ -132,13 +134,13 @@
     <!-- Info Modal -->
     <div id="infoModal" class="fixed inset-0 bg-black bg-opacity-50 hidden items-center justify-center z-50">
         <div class="bg-white dark:bg-gray-800 p-8 rounded-lg max-w-2xl w-full mx-4 relative">
-            <button id="closeModal" class="absolute top-4 right-4 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200">
+            <button id="closeModal" aria-label="Close instructions" class="absolute top-4 right-4 text-text-light hover:text-gray-700 dark:text-text-dark dark:hover:text-gray-200">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
             <h2 class="text-2xl font-game mb-4 gradient-text">How to Play Perfect Circle</h2>
-            <div class="space-y-4 text-gray-600 dark:text-gray-300 font-game">
+            <div class="space-y-4 text-text-light dark:text-text-dark font-game">
                 <p>Welcome to Perfect Circle, a game that challenges your precision and steady hand! Here's how to play:</p>
                 <ol class="list-decimal list-inside space-y-2">
                     <li>Click and hold your mouse button to start drawing</li>
@@ -210,7 +212,7 @@
                 points.push({x, y});
 
                 ctx.beginPath();
-                ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--tw-text-opacity') > 0.5 ? '#4CAF50' : '#45a049';
+                ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--tw-text-opacity') > 0.5 ? '#2E7D32' : '#388E3C';
                 ctx.lineWidth = 4;
                 ctx.lineCap = 'round';
                 ctx.lineJoin = 'round';
@@ -323,7 +325,7 @@
             points.push({x, y});
             
             ctx.beginPath();
-            ctx.strokeStyle = '#4CAF50';
+            ctx.strokeStyle = '#2E7D32';
             ctx.lineWidth = 4;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
@@ -415,5 +417,8 @@
         updateTheme();
         setTimeout(animateCircle, 1000); // Start animation after 1 second
     </script>
+    <link href="https://fonts.googleapis.com/css2?family=Righteous&family=Fredoka+One&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+
 </body>
 </html>
