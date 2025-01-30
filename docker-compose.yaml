@@ -1,0 +1,9 @@
+version: '3.8'
+
+services:
+  circle-game:
+    image: circle-game
+    container_name: circle-game
+    ports:
+      - "8080:80"
+    restart: unless-stopped
