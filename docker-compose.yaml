@@ -2,9 +2,9 @@ services:
   circle-game:
     container_name: circle-game
     image: sharfy9/circle-game:latest
-    # build:
-    #   context: .
-    #   dockerfile: Dockerfile
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
       - "8687:80"
     restart: unless-stopped

@@ -1,10 +1,11 @@
 # 🎯 Perfect Circle Game
+![Perfect Circle Game Preview](assets/preview.png)
 
 Ever wondered how steady your hand is? Well, I got bored one day and decided to find out! Welcome to Perfect Circle - a simple yet addictive game that challenges you to draw the most perfect circle possible.
 
-![Demo of Perfect Circle Game](assets/demo.gif)
+![Demo of Perfect Circle Game](assets/screenshot.png)
 
-*Figure: A demo of the Perfect Circle Game in action.*
+*Figure: screenshot of the Perfect Circle Game.*
 
 ## 🎮 The Game
 
@@ -16,7 +17,26 @@ Draw circles. That's it! But here's the catch - they need to be *perfect*. The g
 - Stats tracking (tries and average accuracy)
 - Responsive design that works on both desktop and mobile
 
+
+![Demo of Perfect Circle Game](assets/demo.gif)
+
+*Figure: A demo of the Perfect Circle Game in action.*
+
 ## 🚀 Quick Start
+
+### Clone the Repository
+
+Clone the repository to run or build docker image locally:
+
+```bash
+# Pull github repo
+git clone https://github.com/sharf-shawon/circle-game.git
+
+# navigate to the repo directory
+cd circle-game
+```
+
+
 
 ### Using Docker (Recommended)
 
