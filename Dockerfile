@@ -8,7 +8,8 @@ WORKDIR /usr/share/nginx/html
 RUN rm -rf /usr/share/nginx/html/*
 
 # Copy the index.html file
-COPY . .
+COPY ./index.html ./index.html
+COPY ./assets ./assets
 
 # Expose port 80 for the web server
 EXPOSE 80
