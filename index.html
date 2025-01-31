@@ -327,7 +327,7 @@
             points.push({x, y});
             
             ctx.beginPath();
-            ctx.strokeStyle = '#2E7D32';
+            ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--tw-text-opacity') > 0.5 ? '#2E7D32' : '#388E3C';;
             ctx.lineWidth = 4;
             ctx.lineCap = 'round';
             ctx.lineJoin = 'round';
