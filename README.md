@@ -30,10 +30,10 @@ Clone the repository to run or build docker image locally:
 
 ```bash
 # Pull github repo
-git clone https://github.com/sharf-shawon/circle-game.git
+git clone https://github.com/sharf-shawon/perfect-circle-game.git
 
 # navigate to the repo directory
-cd circle-game
+cd perfect-circle-game
 ```
 
 
